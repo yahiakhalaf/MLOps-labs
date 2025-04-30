@@ -1,0 +1,23 @@
+data:
+  train_path: data/raw/train.csv
+  test_path: data/raw/test.csv
+  test_size: 0.2
+  target: Survived
+preprocessing:
+  numeric_features:
+  - Age
+  - Fare
+  categorical_features:
+  - Sex
+  - Embarked
+  numeric_strategy: median
+  categorical_strategy: most_frequent
+model:
+  name: random_forest
+  n_estimators: 100
+  random_state: 42
+  max_depth: 5
+paths:
+  model_output: models/RandomForest_model.joblib
+  metrics_output: reports/metrics.json
+  log_file: logs/training.log
