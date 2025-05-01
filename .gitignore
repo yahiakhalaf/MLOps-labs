@@ -183,6 +183,5 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-/models
 /data/processed/
 /models/
