@@ -1,0 +1,20 @@
+stages:
+  preprocess:
+    cmd: python src/training/preprocessor.py
+    deps:
+      - src/training/preprocessor.py
+      - data/raw
+      - params.yaml
+    outs:
+      - data/processed:  # Now explicitly tracked
+          persist: true  # Keep between runs
+          desc: "Cleaned training data"
+
+  train:
+    cmd: python src/training/train.py
+    deps:
+      - data/processed  # Now a dependency
+      - params.yaml
+    outs:
+      - models/:
+          desc: "Trained model binaries"
