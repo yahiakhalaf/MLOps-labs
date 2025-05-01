@@ -1,0 +1,43 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/training/preprocessor.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: c5f612fdfe06b317e4101c4b035c692c.dir
+      size: 89823
+      nfiles: 2
+    - path: params.yaml
+      hash: md5
+      md5: 5d89571031184bdb84bc92507387580f
+      size: 518
+    - path: src/training/preprocessor.py
+      hash: md5
+      md5: 087c916164c48979adf530d2c47ae916
+      size: 1253
+      isexec: true
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 621bf41bd3246b0ce8509671b079e299.dir
+      size: 49384
+      nfiles: 3
+  train:
+    cmd: PYTHONPATH=src python src/training/train.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 621bf41bd3246b0ce8509671b079e299.dir
+      size: 49384
+      nfiles: 3
+    - path: params.yaml
+      hash: md5
+      md5: 5d89571031184bdb84bc92507387580f
+      size: 518
+    outs:
+    - path: models/
+      hash: md5
+      md5: 7628d1f7c5da9c8bffbb59d8fb8b829a.dir
+      size: 431896
+      nfiles: 1

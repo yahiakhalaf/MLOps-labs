@@ -2,54 +2,42 @@ import joblib
 import pandas as pd
 import logging
 import argparse
-from typing import Union
-from config.config import load_config
+import yaml
+from pathlib import Path
 
-# Setup logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
 logger = logging.getLogger(__name__)
 
 class TitanicPredictor:
     def __init__(self, model_path: str = None):
-        config = load_config()
-        self.model_path = model_path or config["paths"]["model_output"]
+        # Load DVC config
+        with open("params.yaml") as f:
+            self.cfg = yaml.safe_load(f)
+        
+        self.model_path = model_path or self.cfg['paths']['model_output']
         try:
             self.model = joblib.load(self.model_path)
-            logger.info(f"Loaded model from {self.model_path}")
+            logger.info(f"Model loaded from {self.model_path}")
         except Exception as e:
             logger.error(f"Model loading failed: {str(e)}")
             raise
 
-    def predict(self, input_data: Union[dict, pd.DataFrame]) -> Union[int, pd.Series]:
+    def predict(self, input_data):
         try:
             if isinstance(input_data, dict):
-                input_data = self._prepare_input(input_data)
-                prediction = int(self.model.predict(input_data)[0])
-                logger.info(f"Prediction: {prediction}")
-                return prediction
+                input_df = self._prepare_input(input_data)
+                return int(self.model.predict(input_df)[0])
             elif isinstance(input_data, pd.DataFrame):
-                predictions = self.model.predict(input_data)
-                logger.info("Batch predictions completed.")
-                return pd.Series(predictions)
+                return self.model.predict(input_data)
         except Exception as e:
             logger.error(f"Prediction failed: {str(e)}")
             raise
 
     def _prepare_input(self, raw_data: dict) -> pd.DataFrame:
-        config = load_config()
         expected_features = (
-            config["preprocessing"]["numeric_features"] +
-            config["preprocessing"]["categorical_features"]
+            self.cfg['data']['features']['numerical'] +
+            self.cfg['data']['features']['categorical']
         )
-        df = pd.DataFrame([raw_data])
-        for feat in expected_features:
-            if feat not in df.columns:
-                df[feat] = None
-        return df
-
+        return pd.DataFrame({k: [raw_data.get(k)] for k in expected_features})
 
 def main():
     parser = argparse.ArgumentParser(description="Titanic Predictor")
