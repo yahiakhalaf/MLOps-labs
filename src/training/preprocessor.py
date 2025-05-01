@@ -3,29 +3,27 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 import logging
-from omegaconf import DictConfig
-import hydra
+import yaml
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-@hydra.main(config_path="../../config", config_name="config", version_base="1.3")
-def build_preprocessor(cfg: DictConfig) -> ColumnTransformer:
-    """Create preprocessor with Hydra config"""
+def build_preprocessor(cfg):
+    """Create preprocessor using DVC params.yaml"""
     try:
+
         logger.info("Building preprocessing pipeline")
-        
-        # Convert OmegaConf lists to Python lists
-        numeric_features = list(cfg.preprocessing.numeric_features)
-        categorical_features = list(cfg.preprocessing.categorical_features)
+        numeric_features = cfg['data']['features']['numerical']
+        categorical_features = cfg['data']['features']['categorical']
 
         return ColumnTransformer(
             transformers=[
                 ("num", Pipeline([
-                    ("imputer", SimpleImputer(strategy=cfg.preprocessing.numeric_strategy)),
+                    ("imputer", SimpleImputer(strategy=cfg['preprocessing']['numeric_strategy'])),
                     ("scaler", StandardScaler())
                 ]), numeric_features),
                 ("cat", Pipeline([
-                    ("imputer", SimpleImputer(strategy=cfg.preprocessing.categorical_strategy)),
+                    ("imputer", SimpleImputer(strategy=cfg['preprocessing']['categorical_strategy'])),
                     ("onehot", OneHotEncoder(handle_unknown="ignore"))
                 ]), categorical_features)
             ],

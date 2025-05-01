@@ -11,7 +11,7 @@ stages:
           desc: "Cleaned training data"
 
   train:
-    cmd: python src/training/train.py
+    cmd: PYTHONPATH=src python src/training/train.py
     deps:
       - data/processed  # Now a dependency
       - params.yaml

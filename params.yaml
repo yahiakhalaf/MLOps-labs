@@ -8,6 +8,9 @@ data:
     numerical: ["Age", "Fare"]
     categorical: ["Sex", "Embarked"]
 
+preprocessing:
+ numeric_strategy : "median"
+ categorical_strategy : "most_frequent"
 model:
   type: "random_forest"
   params:
@@ -18,3 +21,4 @@ model:
 paths:
   metrics_file: "reports/metrics.json"
   model_output: "models/model.joblib"
+  model_dir : "models/"
