@@ -22,3 +22,7 @@ paths:
   metrics_file: "reports/metrics.json"
   model_output: "models/model.joblib"
   model_dir : "models/"
+
+mlflow:
+  tracking_uri: https://dagshub.com/yahiakhalaf14/MLOps-labs.mlflow
+  experiment_name: Titanic-Experiment

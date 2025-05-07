@@ -10,8 +10,9 @@ stages:
       nfiles: 2
     - path: params.yaml
       hash: md5
-      md5: 5d89571031184bdb84bc92507387580f
-      size: 518
+      md5: 3ba6c9ea745301b1e62955424d67aace
+      size: 634
+      isexec: true
     - path: src/training/preprocessor.py
       hash: md5
       md5: 087c916164c48979adf530d2c47ae916
@@ -33,8 +34,9 @@ stages:
       nfiles: 3
     - path: params.yaml
       hash: md5
-      md5: 5d89571031184bdb84bc92507387580f
-      size: 518
+      md5: 3ba6c9ea745301b1e62955424d67aace
+      size: 634
+      isexec: true
     outs:
     - path: models/
       hash: md5
