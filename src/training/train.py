@@ -8,9 +8,9 @@ import pandas as pd
 import numpy as np
 import yaml
 from pathlib import Path
-from training.data_loader import load_and_split_data
-from training.preprocessor import build_preprocessor
-from training.evaluate import evaluate_model
+from src.training.data_loader import load_and_split_data
+from src.training.preprocessor import build_preprocessor
+from src.training.evaluate import evaluate_model
 
 # Setup logging
 logging.basicConfig(

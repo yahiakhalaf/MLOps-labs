@@ -4,7 +4,7 @@ import logging
 import argparse
 import yaml
 from pathlib import Path
-
+import joblib
 logger = logging.getLogger(__name__)
 
 class TitanicPredictor:
@@ -71,6 +71,7 @@ def main():
             print(f"Failed to predict from instance: {str(e)}")
     else:
         print("Please provide --csv path or --instance key=value pairs")
-
+    print(f"model Saved")
+    joblib.dump(predictor,"/teamspace/studios/this_studio/mlops_project/MLOps-labs/models/predictor.joblib")
 if __name__ == "__main__":
     main()
